@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -11,7 +12,7 @@ import React from 'react';
 import {useCryptoDetail} from './useCryptoDetail';
 
 const CryptoDetail = () => {
-  const {data, price, error, onChange, onSubmit} = useCryptoDetail();
+  const {data, price, loading, error, onChange, onSubmit} = useCryptoDetail();
   return (
     <ScrollView style={styles.container}>
       {data?.image && (
@@ -44,6 +45,7 @@ const CryptoDetail = () => {
 
       <TextInput
         style={[styles.input, error && {borderColor: '#FF1E62'}]}
+        textAlign="center"
         keyboardType="numeric"
         placeholder={'Ingrese la cantidad a convertir'}
         onChangeText={onChange}
@@ -55,8 +57,15 @@ const CryptoDetail = () => {
         </Text>
       )}
       <Text style={styles.priceInCOP}>$ {price ? price : '0'} COP</Text>
-      <TouchableOpacity onPress={onSubmit} style={styles.btn}>
-        <Text style={styles.btnText}>Convertir</Text>
+      <TouchableOpacity
+        disabled={loading}
+        onPress={onSubmit}
+        style={styles.btn}>
+        {loading ? (
+          <ActivityIndicator color={'#161B21'} size={'small'} />
+        ) : (
+          <Text style={styles.btnText}>Convertir</Text>
+        )}
       </TouchableOpacity>
     </ScrollView>
   );
@@ -118,14 +127,12 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    alignSelf: 'center',
-    width: '100%',
+    color: '#000',
     marginTop: 24,
     borderWidth: 1,
     backgroundColor: '#FFFFFF',
     borderRadius: 18,
     fontSize: 18,
-    textAlign: 'center',
   },
 
   priceInCOP: {
@@ -139,7 +146,8 @@ const styles = StyleSheet.create({
 
   btn: {
     minWidth: 180,
-    backgroundColor: 'yellow',
+    marginTop: 24,
+    backgroundColor: '#EFC432',
     alignSelf: 'center',
     padding: 8,
     borderRadius: 18,
@@ -147,7 +155,8 @@ const styles = StyleSheet.create({
 
   btnText: {
     fontSize: 18,
-    color: 'black',
+    fontWeight: 'bold',
+    color: '#161B21',
     textAlign: 'center',
   },
 });

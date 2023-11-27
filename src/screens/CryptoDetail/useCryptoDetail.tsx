@@ -9,6 +9,7 @@ export function useCryptoDetail() {
   const [cryptoData, setCryptoData] = useState<CryptoCoin>();
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState('0');
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -18,12 +19,15 @@ export function useCryptoDetail() {
   }, []);
 
   const onChange = (value: string) => {
+    setError(false);
     setAmount(Number(value));
   };
 
   const onSubmit = async () => {
-    setError(false);
-
+    if (error) {
+      setError(false);
+    }
+    setLoading(true);
     try {
       if (cryptoData) {
         const data = await convertToUSD(cryptoData?.id, amount);
@@ -37,12 +41,15 @@ export function useCryptoDetail() {
     } catch (error) {
       console.error(error);
     }
+
+    setLoading(false);
   };
 
   return {
     data: cryptoData,
     amount,
     price,
+    loading,
     error,
     onChange,
     onSubmit,
