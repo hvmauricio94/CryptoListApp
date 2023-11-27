@@ -9,7 +9,7 @@ export function useCryptoDetail() {
   const [cryptoData, setCryptoData] = useState<CryptoCoin>();
   const [amount, setAmount] = useState(0);
   const [price, setPrice] = useState('0');
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
